@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "synapse.fullname" . }}
+  labels:
+{{ include "synapse.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+{{- if .Values.strategy }}
+  strategy:
+{{ toYaml .Values.strategy | indent 4 }}
+{{ if eq .Values.strategy.type "Recreate" }}
+    rollingUpdate: null
+{{- end }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "synapse.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        app.kubernetes.io/name: {{ include "synapse.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "synapse.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: generate-config
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["generate"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+          env:
+            - { name: SYNAPSE_CONFIG_DIR, value: "/data" }
+            - { name: SYNAPSE_DATA_DIR, value: "/data" }
+            - { name: SYNAPSE_CONFIG_PATH, value: "/config/homeserver.yaml" }
+            - { name: UID, value: {{ .Values.settings.uid | quote }} }
+            - { name: GID, value: {{ .Values.settings.gid | quote }} }
+            - { name: SYNAPSE_SERVER_NAME, value: {{ .Values.homeserver.server_name | quote }} }
+            - { name: SYNAPSE_REPORT_STATS, value: {{ .Values.settings.report_stats | toString | quote }} }
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: chdir
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "chown {{.Values.settings.uid}}:{{.Values.settings.gid}} -R /data"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+          env:
+            - { name: SYNAPSE_CONFIG_DIR, value: "/data" }
+            - { name: SYNAPSE_DATA_DIR, value: "/data" }
+            - { name: SYNAPSE_CONFIG_PATH, value: "/config/homeserver.yaml" }
+            - { name: UID, value: {{ .Values.settings.uid | quote }} }
+            - { name: GID, value: {{ .Values.settings.gid | quote }} }
+            - { name: SYNAPSE_SERVER_NAME, value: {{ .Values.homeserver.server_name | quote }} }
+            - { name: SYNAPSE_REPORT_STATS, value: {{ .Values.settings.report_stats | toString | quote }} }
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          #command: ["/bin/sh"]
+          #args: ["-c", "sleep 10000"]
+          ports:
+            - name: http
+              containerPort: 8008
+              protocol: TCP
+          env:
+            - { name: SYNAPSE_CONFIG_DIR, value: "/data" }
+            - { name: SYNAPSE_DATA_DIR, value: "/data" }
+            - { name: SYNAPSE_CONFIG_PATH, value: "/config/homeserver.yaml" }
+            - { name: UID, value: {{ .Values.settings.uid | quote }} }
+            - { name: GID, value: {{ .Values.settings.gid | quote }} }
+            - { name: SYNAPSE_SERVER_NAME, value: {{ .Values.homeserver.server_name | quote }} }
+            - { name: SYNAPSE_REPORT_STATS, value: {{ .Values.settings.report_stats | toString | quote }} }
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (printf "%s-%s" (include "synapse.fullname" .) "data") }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: config
+          secret:
+            secretName: {{ include "synapse.fullname" . }}
