@@ -1545,9 +1545,10 @@ homeserver:
     #
     #require_transport_security: true
 
-    # Enable sending emails for messages that the user has missed
+    # Uncomment the following to enable sending emails for messages that the user
+    # has missed. Disabled by default.
     #
-    #enable_notifs: false
+    #enable_notifs: true
 
     # notif_from defines the "From" address to use when sending emails.
     # It must be set if email sending is enabled.
@@ -1899,49 +1900,47 @@ homeserver:
       #    false
 
 
-  # vim:ft=yaml
+logconfig:
+  # Log configuration for Synapse.
+  #
+  # This is a YAML file containing a standard Python logging configuration
+  # dictionary. See [1] for details on the valid settings.
+  #
+  # [1]: https://docs.python.org/3.7/library/logging.config.html#configuration-dictionary-schema
 
-  logconfig:
-    # Log configuration for Synapse.
-    #
-    # This is a YAML file containing a standard Python logging configuration
-    # dictionary. See [1] for details on the valid settings.
-    #
-    # [1]: https://docs.python.org/3.7/library/logging.config.html#configuration-dictionary-schema
+  version: 1
 
-    version: 1
+  formatters:
+    precise:
+      format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s - %(message)s'
 
-    formatters:
-      precise:
-        format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s - %(message)s'
+  filters:
+    context:
+      (): synapse.logging.context.LoggingContextFilter
+      request: ""
 
-    filters:
-      context:
-        (): synapse.logging.context.LoggingContextFilter
-        request: ""
+  handlers:
+    file:
+      class: logging.handlers.RotatingFileHandler
+      formatter: precise
+      filename: /data/homeserver.log
+      maxBytes: 104857600
+      backupCount: 10
+      filters: [context]
+      encoding: utf8
+    console:
+      class: logging.StreamHandler
+      formatter: precise
+      filters: [context]
 
-    handlers:
-      file:
-        class: logging.handlers.RotatingFileHandler
-        formatter: precise
-        filename: /data/homeserver.log
-        maxBytes: 104857600
-        backupCount: 10
-        filters: [context]
-        encoding: utf8
-      console:
-        class: logging.StreamHandler
-        formatter: precise
-        filters: [context]
-
-    loggers:
-      synapse.storage.SQL:
-        # beware: increasing this to DEBUG will make synapse log sensitive
-        # information such as access tokens.
-        level: INFO
-
-    root:
+  loggers:
+    synapse.storage.SQL:
+      # beware: increasing this to DEBUG will make synapse log sensitive
+      # information such as access tokens.
       level: INFO
-      handlers: [file, console]
 
-    disable_existing_loggers: false
+  root:
+    level: INFO
+    handlers: [file, console]
+
+  disable_existing_loggers: false
