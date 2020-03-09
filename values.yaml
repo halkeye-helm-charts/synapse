@@ -312,6 +312,10 @@ homeserver:
     # If you plan to use a reverse proxy, please see
     # https://github.com/matrix-org/synapse/blob/master/docs/reverse_proxy.md.
     #
+    - type: metrics
+      port: 9000
+      bind_addresses:
+        - '0.0.0.0'
     - port: 8008
       tls: false
       type: http

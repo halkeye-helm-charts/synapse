@@ -11,8 +11,11 @@ metadata:
   name: {{ $fullName }}
   labels:
 {{ include "synapse.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+    prometheus.io/path: /_synapse/metrics
+    prometheus.io/port: "9090"
+    prometheus.io/scrape: "true"
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:

@@ -20,6 +20,9 @@ spec:
   template:
     metadata:
       annotations:
+        prometheus.io/path: /_synapse/metrics
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app.kubernetes.io/name: {{ include "synapse.name" . }}
