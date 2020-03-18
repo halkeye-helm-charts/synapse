@@ -84,6 +84,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           #command: ["/bin/sh"]
           #args: ["-c", "sleep 10000"]
+          command:
+            - sh
+            - -c
+            - |
+              apk add --no-cache git
+              pip install git+https://github.com/devture/matrix-synapse-shared-secret-auth
+              pip install git+https://github.com/t2bot/synapse-simple-antispam#egg=synapse-simple-antispam
+              exec python3 /start.py
           ports:
             - name: http
               containerPort: 8008
