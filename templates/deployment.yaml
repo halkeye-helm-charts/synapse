@@ -21,7 +21,7 @@ spec:
     metadata:
       annotations:
         prometheus.io/path: /_synapse/metrics
-        prometheus.io/port: "9090"
+        prometheus.io/port: "9000"
         prometheus.io/scrape: "true"
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:

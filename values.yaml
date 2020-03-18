@@ -1174,7 +1174,7 @@ homeserver:
 
   # Enable collection and rendering of performance metrics
   #
-  #enable_metrics: false
+  enable_metrics: true
 
   # Enable sentry integration
   # NOTE: While attempts are made to ensure that the logs don't contain
