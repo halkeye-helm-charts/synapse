@@ -2,7 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCounts:
+  master: 1
+  federation_reader: 1
 
 image:
   repository: matrixdotorg/synapse
@@ -103,8 +105,14 @@ persistence:
     - ReadWriteMany
   size: 8Gi
 
+extra_python_modules:
+  - git+https://github.com/devture/matrix-synapse-shared-secret-auth
+  - git+https://github.com/t2bot/synapse-simple-antispam#egg=synapse-simple-antispam
 
 homeserver:
+  # Don't send federation from main proc
+  send_federation: False
+
   # Configuration file for Synapse.
   #
   # This is a YAML file: see [1] for a quick introduction. Note in particular
@@ -317,6 +325,18 @@ homeserver:
     # If you plan to use a reverse proxy, please see
     # https://github.com/matrix-org/synapse/blob/master/docs/reverse_proxy.md.
     #
+    # The TCP replication port
+    - port: 9092
+      bind_addresses:
+        - '0.0.0.0'
+      type: replication
+    # The HTTP replication port
+    - port: 9093
+      bind_addresses:
+        - '0.0.0.0'
+      type: http
+      resources:
+        - names: [replication]
     - type: metrics
       port: 9000
       bind_addresses:
@@ -1956,3 +1976,16 @@ logconfig:
     handlers: [file, console]
 
   disable_existing_loggers: false
+
+federation_reader:
+  worker_app: synapse.app.federation_reader
+  # The replication listener on the synapse to talk to.
+  worker_replication_host: '{{ include "synapse.fullname" . }}'
+  worker_replication_port: 9092
+  worker_replication_http_port: 9093
+  worker_listeners:
+    - type: http
+      port: 8083
+      resources:
+        - names: [federation]
+  worker_log_config: "/config/log.config"

@@ -1,0 +1,19 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+## Warning
+
+still very much work in progress. Works for me but no documentation. See https://github.com/halkeye/helmfile/tree/master/charts/matrix
+
+{{ template "chart.versionLine" . }}
+
+{{ template "chart.sourceLinkLine" . }}
+
+## Changelog
+
+0.2.0 - Seperated out federation-reader into its own stateful set (might move to deployment) to help scalability since all processes are single cpu
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+

@@ -11,6 +11,14 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: 9092
+      targetPort: worker-tcp
+      protocol: TCP
+      name: worker-tcp
+    - port: 9093
+      targetPort: worker-http
+      protocol: TCP
+      name: worker-http
   selector:
     app.kubernetes.io/name: {{ include "synapse.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
