@@ -88,10 +88,8 @@ spec:
             - sh
             - -c
             - |
-              apk add --no-cache git
-              {{- range .Values.extra_python_modules }}
-              pip install {{ . }}
-              {{- end }}
+              set -ex
+              {{ include "synapse.installPip" . | nindent 14 }}
               exec python3 /start.py
           ports:
             - name: http

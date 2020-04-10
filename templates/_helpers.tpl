@@ -54,3 +54,13 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "synapse.installPip" -}}
+apk add --no-cache git
+{{- range .Values.extra_python_modules }}
+pip install {{ . }}
+{{- end }}
+{{- end -}}

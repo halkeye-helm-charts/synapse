@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "synapse.fullname" . }}-federation-reader
   labels:
@@ -62,10 +62,7 @@ spec:
             - -c
             - |
               set -ex
-              apk add --no-cache git
-              {{- range .Values.extra_python_modules }}
-              pip install {{ . }}
-              {{- end }}
+              {{ include "synapse.installPip" . | nindent 14 }}
               chown -R "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" /data
               /sbin/su-exec "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" python -m "synapse.app.federation_reader" --config-path "/config/homeserver.yaml" --config-path "/config/federation-reader"
           ports:
