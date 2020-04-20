@@ -5,6 +5,7 @@
 replicaCounts:
   master: 1
   federation_reader: 1
+  federation_sender: 1
 
 image:
   repository: matrixdotorg/synapse
@@ -111,7 +112,7 @@ extra_python_modules:
 
 homeserver:
   # Don't send federation from main proc
-  send_federation: False
+  send_federation: false
 
   # Configuration file for Synapse.
   #
@@ -1979,6 +1980,19 @@ logconfig:
 
 federation_reader:
   worker_app: synapse.app.federation_reader
+  # The replication listener on the synapse to talk to.
+  worker_replication_host: '{{ include "synapse.fullname" . }}'
+  worker_replication_port: 9092
+  worker_replication_http_port: 9093
+  worker_listeners:
+    - type: http
+      port: 8083
+      resources:
+        - names: [federation]
+  worker_log_config: "/config/log.config"
+
+federation_sender:
+  worker_app: synapse.app.federation_sender
   # The replication listener on the synapse to talk to.
   worker_replication_host: '{{ include "synapse.fullname" . }}'
   worker_replication_port: 9092
