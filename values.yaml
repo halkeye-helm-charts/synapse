@@ -9,7 +9,7 @@ replicaCounts:
 
 image:
   repository: matrixdotorg/synapse
-  tag: v1.13.0-py3
+  tag: v1.14.0-py3
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
