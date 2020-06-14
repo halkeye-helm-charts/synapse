@@ -62,6 +62,7 @@ spec:
             - -c
             - |
               set -ex
+              cp /config/* /data/
               {{ include "synapse.installPip" . | nindent 14 }}
               chown -R "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" /data
               /sbin/su-exec "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" python -m "synapse.app.federation_reader" --config-path "/config/homeserver.yaml" --config-path "/config/federation-reader"

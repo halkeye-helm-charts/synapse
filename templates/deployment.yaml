@@ -45,7 +45,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ["generate"]
+          command:
+            - sh
+            - -c
+            - |
+              set -ex
+              cp /config/* /data/
+              {{ include "synapse.installPip" . | nindent 14 }}
+              exec python3 /start.py generate
           volumeMounts:
             - name: data
               mountPath: /data
@@ -89,6 +96,7 @@ spec:
             - -c
             - |
               set -ex
+              cp /config/* /data/
               {{ include "synapse.installPip" . | nindent 14 }}
               exec python3 /start.py
           ports:
