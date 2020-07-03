@@ -9,7 +9,7 @@ replicaCounts:
 
 image:
   repository: matrixdotorg/synapse
-  tag: v1.14.0-py3
+  tag: "{{ .Chart.AppVersion }}"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
