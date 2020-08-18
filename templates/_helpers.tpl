@@ -59,7 +59,7 @@ Create the name of the service account to use
 Create the name of the service account to use
 */}}
 {{- define "synapse.installPip" -}}
-apk add --no-cache git
+apt-get update && apt-get install -y --no-install-recommends git
 {{- range .Values.extra_python_modules }}
 pip install {{ . }}
 {{- end }}

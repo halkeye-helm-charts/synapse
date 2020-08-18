@@ -65,11 +65,22 @@ spec:
               cp /config/* /data/
               {{ include "synapse.installPip" . | nindent 14 }}
               chown -R "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" /data
-              /sbin/su-exec "{{ .Values.settings.uid }}:{{ .Values.settings.gid }}" python -m "synapse.app.federation_reader" --config-path "/config/homeserver.yaml" --config-path "/config/federation-reader"
+              python -m "synapse.app.federation_reader" --config-path "/config/homeserver.yaml" --config-path "/config/federation-reader"
           ports:
             - name: http
               containerPort: {{ (index .Values.federation_reader.worker_listeners 0).port }}
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
           env:
             - { name: SYNAPSE_CACHE_FACTOR, value: {{ .Values.cacheFactor | toString | quote }} }
           volumeMounts:
