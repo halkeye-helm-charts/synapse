@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: v1.22.0
+appVersion: v1.22.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.13
+version: 0.7.14
 keywords:
   - synapse
   - chat
