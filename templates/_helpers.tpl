@@ -35,13 +35,20 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "synapse.labels" -}}
-app.kubernetes.io/name: {{ include "synapse.name" . }}
 helm.sh/chart: {{ include "synapse.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "synapse.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "synapse.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "synapse.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
@@ -55,9 +62,6 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
-{{/*
-Create the name of the service account to use
-*/}}
 {{- define "synapse.installPip" -}}
 apt-get update && apt-get install -y --no-install-recommends git
 {{- range .Values.extra_python_modules }}

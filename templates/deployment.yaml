@@ -2,6 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "synapse.fullname" . }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+    {{- range $key, $value := .Values.deploymentAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
   labels:
 {{ include "synapse.labels" . | indent 4 }}
 spec:
@@ -15,8 +21,7 @@ spec:
 {{- end }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "synapse.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "synapse.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -25,13 +30,14 @@ spec:
         prometheus.io/scrape: "true"
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        app.kubernetes.io/name: {{ include "synapse.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "synapse.selectorLabels" . | nindent 8 }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      {{- end }}
     spec:
-    {{- if .Values.dnsConfig }}
-      dnsConfig:
-        {{- toYaml .Values.dnsConfig | nindent 8 }}
-    {{- end }}
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -39,6 +45,10 @@ spec:
       serviceAccountName: {{ template "synapse.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.dnsConfig | nindent 8 }}
+      {{- end }}
       initContainers:
         - name: generate-config
           securityContext:
