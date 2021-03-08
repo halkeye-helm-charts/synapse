@@ -17,8 +17,8 @@ spec:
       protocol: TCP
       name: worker-tcp
     - port: 9093
-      targetPort: worker-http
+      targetPort: worker-web
       protocol: TCP
-      name: worker-http
+      name: worker-web
   selector:
     {{- include "synapse.selectorLabels" . | nindent 4 }}
