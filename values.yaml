@@ -44,9 +44,11 @@ service:
 
 probes:
   liveness:
+    initialDelaySeconds: 5
     failureThreshold: 5
     periodSeconds: 10
   readiness:
+    initialDelaySeconds: 5
     failureThreshold: 5
     periodSeconds: 10
   startup:
