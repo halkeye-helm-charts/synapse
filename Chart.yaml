@@ -3,7 +3,7 @@ type: application
 appVersion: v1.30.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.33
+version: 0.7.34
 keywords:
   - synapse
   - chat
@@ -19,6 +19,7 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
+    - (Fixing bad packaging error)
     - Bump app version to 1.30.
     - Populate artifact hub changelog and images
     - Fix readme generation
@@ -26,5 +27,5 @@ annotations:
     - fix bug with helm's skip deleting pvc annotation
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
-    - name: nginx
-      image: nginx:v1.30.0
+    - name: synapse
+      image: matrixdotorg/synapse:v1.30.0
