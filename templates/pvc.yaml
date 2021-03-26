@@ -1,11 +1,15 @@
 {{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
+{{- $persistenceAnnotations := .Values.persistence.annotations }}
+{{- if .Values.persistence.skipuninstall }}
+{{- $persistenceAnnotations = merge $persistenceAnnotations (dict "helm.sh/resource-policy" "keep") }}
+{{- end }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "synapse.fullname" . }}
   labels:
 {{ include "synapse.labels" . | indent 4 }}
-  {{- with .Values.persistence.annotations  }}
+  {{- with $persistenceAnnotations }}
   annotations:
 {{ toYaml . | indent 4 }}
   {{- end }}
