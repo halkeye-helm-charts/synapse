@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.30.0
+appVersion: v1.30.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.34
+version: 0.7.35
 keywords:
   - synapse
   - chat
@@ -19,13 +19,8 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - (Fixing bad packaging error)
-    - Bump app version to 1.30.
-    - Populate artifact hub changelog and images
-    - Fix readme generation
-    - Update ingress to newer Kind to remove deprecated warnings
-    - fix bug with helm's skip deleting pvc annotation
-  artifacthub.io/containsSecurityUpdates: "false"
+    - Bump app version to 1.30.1 which handles a openssl security issue - https://github.com/matrix-org/synapse/releases/tag/v1.30.1
+  artifacthub.io/containsSecurityUpdates: "true"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.30.0
+      image: matrixdotorg/synapse:v1.30.1
