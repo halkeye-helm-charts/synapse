@@ -3,7 +3,7 @@ type: application
 appVersion: v1.30.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.36
+version: 0.7.37
 keywords:
   - synapse
   - chat
@@ -14,6 +14,11 @@ sources:
   - https://github.com/matrix-org/synapse
   - https://hub.docker.com/r/matrixdotorg/synapse
   - https://matrix.org/blog/home/
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: ~10.3.17
+    condition: postgresql.enabled
 maintainers:
   - name: Gavin Mogan
     email: helm@gavinmogan.com
