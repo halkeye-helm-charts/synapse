@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.33.1
+appVersion: v1.34.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.39
+version: 0.7.40
 keywords:
   - synapse
   - chat
@@ -19,8 +19,8 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Update to latest synapse version. See https://github.com/matrix-org/synapse/releases/tag/v1.33.1
+    - Update to latest synapse version. See https://github.com/matrix-org/synapse/releases/tag/v1.34.0
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.33.1
+      image: matrixdotorg/synapse:v1.34.0
