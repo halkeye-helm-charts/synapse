@@ -1,6 +1,6 @@
 apiVersion: v2
 type: application
-appVersion: v1.36.0
+appVersion: v1.37.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
 version: 0.7.42
@@ -19,9 +19,9 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Update to latest synapse version. See https://github.com/matrix-org/synapse/releases/tag/v1.34.0
-  artifacthub.io/containsSecurityUpdates: "false"
+    - Update to latest synapse version. See https://github.com/matrix-org/synapse/releases/tag/v1.37.0 and https://github.com/matrix-org/synapse/releases/tag/v1.37.1
     - Removes default security keys (as reported by Andreas Lindhé by email)
+  artifacthub.io/containsSecurityUpdates: "true"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.36.0
+      image: matrixdotorg/synapse:v1.37.1
