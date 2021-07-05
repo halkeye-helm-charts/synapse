@@ -21,6 +21,7 @@ annotations:
   artifacthub.io/changes: |
     - Update to latest synapse version. See https://github.com/matrix-org/synapse/releases/tag/v1.34.0
   artifacthub.io/containsSecurityUpdates: "false"
+    - Removes default security keys (as reported by Andreas Lindhé by email)
   artifacthub.io/images: |
     - name: synapse
       image: matrixdotorg/synapse:v1.36.0

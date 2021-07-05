@@ -1130,7 +1130,7 @@ homeserver:
   # If set, allows registration of standard or admin accounts by anyone who
   # has the shared secret, even if registration is otherwise disabled.
   #
-  registration_shared_secret: ".fnhLGB&_xY:&k=kEnGpPJ6l=3eyc2zsf8D^_,jsZ1J++sGkDG"
+  registration_shared_secret: ""
 
   # Set the number of bcrypt rounds used to generate password hash.
   # Larger numbers increase the work factor needed to generate the hash.
@@ -1276,13 +1276,13 @@ homeserver:
   # the registration_shared_secret is used, if one is given; otherwise,
   # a secret key is derived from the signing key.
   #
-  macaroon_secret_key: "hA3r4nhUccExt2J0*V0tWilKXLy.hVfb8Uc:D5M-zsXoT=S#*@"
+  macaroon_secret_key: ""
 
   # a secret which is used to calculate HMACs for form values, to stop
   # falsification of values. Must be specified for the User Consent
   # forms to work.
   #
-  form_secret: "f7wd*VF;OXBLY:-A#Fw@p#yT1Kd#WkVK#GMp;Kd;b7l=*u&^vu"
+  form_secret: ""
 
   ## Signing Keys ##
 
