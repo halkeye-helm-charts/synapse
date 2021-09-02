@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.40.0
+appVersion: v1.41.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.7.46
+version: 0.7.47
 keywords:
   - synapse
   - chat
@@ -24,8 +24,8 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Add optional support to deploy Postgres as a dependency.
-  artifacthub.io/containsSecurityUpdates: "false"
+    - Upgrade to synapse 1.41.1 (which includes security updates)
+  artifacthub.io/containsSecurityUpdates: "true"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.40.0
+      image: matrixdotorg/synapse:v1.41.1
