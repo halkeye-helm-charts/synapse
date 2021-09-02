@@ -112,6 +112,9 @@ database:
   port: 5432
   name: synapse
 
+postgresql:
+  enabled: false
+
 ## Persist configuration to a persistent volume
 persistence:
   ## database data Persistent Volume Storage Class
