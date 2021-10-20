@@ -8,6 +8,9 @@
 {{- fail "Your still using the original default registration_shared_secret" }}
 {{- end }}
 apiVersion: apps/v1
+{{- $podAnnotations := .Values.podAnnotations }}
+{{- $secretAnnotation := dict "checksum/secret" (include (print $.Template.BasePath "/secret.yaml") . | sha256sum) }}
+{{- $podAnnotations := merge $podAnnotations $secretAnnotation }}
 kind: Deployment
 metadata:
   name: {{ include "synapse.fullname" . }}
@@ -33,16 +36,11 @@ spec:
       {{- include "synapse.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      annotations:
-        prometheus.io/path: /_synapse/metrics
-        prometheus.io/port: "9000"
-        prometheus.io/scrape: "true"
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         {{- include "synapse.selectorLabels" . | nindent 8 }}
-      {{- if .Values.podAnnotations }}
+      {{- if $podAnnotations }}
       annotations:
-        {{- range $key, $value := .Values.podAnnotations }}
+        {{- range $key, $value := $podAnnotations }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
       {{- end }}
@@ -140,6 +138,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: media
+              mountPath: /media
             - name: config
               mountPath: /config
           readinessProbe:
@@ -184,6 +184,13 @@ spec:
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.existingClaim | default (include "synapse.fullname" .) }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: media
+          {{- if .Values.existingMediaClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.existingMediaClaim }}
           {{- else }}
           emptyDir: {}
           {{- end }}

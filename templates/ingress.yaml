@@ -14,14 +14,14 @@ metadata:
   name: {{ $fullName }}
   labels:
 {{ include "synapse.labels" . | indent 4 }}
-  annotations:
-    prometheus.io/path: /_synapse/metrics
-    prometheus.io/port: "9090"
-    prometheus.io/scrape: "true"
   {{- with .Values.ingress.annotations }}
+  annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+{{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .ingressClassName }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
   {{- range .Values.ingress.tls }}
@@ -46,7 +46,7 @@ spec:
                 port:
                   number: {{ $svcPort }}
             pathType: Prefix
-            {{- else -}}
+            {{- else }}
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
             {{- end }}
