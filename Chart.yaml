@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.45.0
+appVersion: v1.45.1
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.8.0
+version: 0.8.1
 keywords:
   - synapse
   - chat
@@ -24,10 +24,8 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Add existingMediaClaim for storing media elsewhere if desired
-    - Remove prometheus pod annotations (add them to podAnnotations if desired)
-    - Upgrade to synapse 1.45.0
+    - Upgrade to synapse 1.45.1
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.45.0
+      image: matrixdotorg/synapse:v1.45.1
