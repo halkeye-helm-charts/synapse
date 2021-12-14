@@ -8,8 +8,11 @@ spec:
   replicas: {{ min .Values.replicaCounts.federation_sender 1 }}
   # cannot be load balanced, so don't let it be
   strategy:
-    type: Recreate
+{{ toYaml .Values.strategy | indent 4 }}
+{{ if eq .Values.strategy.type "Recreate" }}
     rollingUpdate: null
+{{- end }}
+{{- end }}
   selector:
     matchLabels:
       synapse-component: federation-sender
