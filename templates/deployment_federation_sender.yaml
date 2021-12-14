@@ -7,6 +7,7 @@ metadata:
 spec:
   replicas: {{ min .Values.replicaCounts.federation_sender 1 }}
   # cannot be load balanced, so don't let it be
+{{- if .Values.strategy }}
   strategy:
 {{ toYaml .Values.strategy | indent 4 }}
 {{ if eq .Values.strategy.type "Recreate" }}
