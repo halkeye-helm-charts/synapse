@@ -126,6 +126,11 @@ spec:
             - name: worker-web
               containerPort: 9093
               protocol: TCP
+            {{- if .Values.homeserver.enable_metrics }}
+            - name: metrics
+              containerPort: 9000
+              protocol: TCP
+            {{- end }}
           env:
             - { name: SYNAPSE_CONFIG_DIR, value: "/data" }
             - { name: SYNAPSE_DATA_DIR, value: "/data" }

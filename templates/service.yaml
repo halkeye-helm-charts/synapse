@@ -20,5 +20,11 @@ spec:
       targetPort: worker-web
       protocol: TCP
       name: worker-web
+    {{- if .Values.homeserver.enable_metrics }}
+    - port: 9000
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
   selector:
     {{- include "synapse.selectorLabels" . | nindent 4 }}
