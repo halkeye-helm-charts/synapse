@@ -144,8 +144,8 @@ persistence:
   size: 8Gi
 
 extra_python_modules:
-  - https://github.com/devture/matrix-synapse-shared-secret-auth/archive/refs/heads/865c95650792b1613ad50edfc69b616bea8116d7.zip
-  - https://github.com/t2bot/synapse-simple-antispam/archive/refs/heads/05ab2289537ef688c9731757651339308bd9ebe7.zip#egg=synapse-simple-antispam
+  - https://github.com/devture/matrix-synapse-shared-secret-auth/archive/refs/tags/2.0.2.zip
+  - https://github.com/t2bot/synapse-simple-antispam/archive/refs/heads/master.zip#egg=synapse-simple-antispam
 
 homeserver:
   # Don't send federation from main proc
