@@ -6,7 +6,6 @@ metadata:
 {{ include "synapse.labels" . | indent 4 }}
 spec:
   replicas: {{ min .Values.replicaCounts.federation_sender 1 }}
-  # cannot be load balanced, so don't let it be
 {{- if .Values.strategy }}
   strategy:
 {{ toYaml .Values.strategy | indent 4 }}
@@ -90,6 +89,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: data
+              mountPath: /data
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -105,6 +106,8 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
+        - name: data
+          emptyDir: {}
         - name: config
           secret:
             secretName: {{ include "synapse.fullname" . }}

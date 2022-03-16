@@ -82,13 +82,15 @@ spec:
               path: /health
               port: http
             initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
-            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
           env:
             - { name: SYNAPSE_CACHE_FACTOR, value: {{ .Values.cacheFactor | toString | quote }} }
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: data
+              mountPath: /data
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -104,6 +106,8 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
+        - name: data
+          emptyDir: {}
         - name: config
           secret:
             secretName: {{ include "synapse.fullname" . }}
