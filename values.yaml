@@ -377,16 +377,17 @@ homeserver:
     # If you plan to use a reverse proxy, please see
     # https://github.com/matrix-org/synapse/blob/master/docs/reverse_proxy.md.
     #
-    # The TCP replication port
-    - port: 9092
-      bind_addresses:
-        - "0.0.0.0"
-      type: replication
     # The HTTP replication port
     - type: metrics
       port: 9000
       bind_addresses:
         - "0.0.0.0"
+    - port: 9093
+      bind_addresses:
+        - "0.0.0.0"
+      type: http
+      resources:
+        - names: [replication]
     - port: 8008
       tls: false
       type: http
@@ -1963,22 +1964,36 @@ federation_reader:
   worker_app: synapse.app.federation_reader
   # The replication listener on the synapse to talk to.
   worker_replication_host: '{{ include "synapse.fullname" . }}'
-  worker_replication_port: 9092
+  worker_replication_http_port: 9093
   worker_listeners:
     - type: http
       port: 8083
       resources:
         - names: [federation]
   worker_log_config: "/config/log.config"
+  redis:
+    # homeserver.redis.enabled -- If you want workers/distributed processing, you want redis as of 1.67
+    # https://matrix-org.github.io/synapse/v1.67/upgrade.html#direct-tcp-replication-is-no-longer-supported-migrate-to-redis
+    enabled: true
+    host:  synapse-redis-master.matrix.svc.cluster.local
+    ## homeserver.redis.password -- Password to connect to redis
+    password: 'riches-jarring-acts'
 
 federation_sender:
   worker_app: synapse.app.federation_sender
   # The replication listener on the synapse to talk to.
   worker_replication_host: '{{ include "synapse.fullname" . }}'
-  worker_replication_port: 9092
+  worker_replication_http_port: 9093
   worker_listeners:
     - type: http
       port: 8083
       resources:
         - names: [federation]
   worker_log_config: "/config/log.config"
+  redis:
+    # homeserver.redis.enabled -- If you want workers/distributed processing, you want redis as of 1.67
+    # https://matrix-org.github.io/synapse/v1.67/upgrade.html#direct-tcp-replication-is-no-longer-supported-migrate-to-redis
+    enabled: true
+    host:  synapse-redis-master.matrix.svc.cluster.local
+    ## homeserver.redis.password -- Password to connect to redis
+    password: 'riches-jarring-acts'
