@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.66.0
+appVersion: v1.68.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.8.20
+version: 0.8.21
 keywords:
   - synapse
   - chat
@@ -17,15 +17,20 @@ sources:
 dependencies:
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: ~10.3.17
+    version: ~10.16.2
     condition: postgresql.enabled
+  - name: redis
+    repository: https://charts.bitnami.com/bitnami
+    version: ~17.2.0
+    condition: redis.enabled
 maintainers:
   - name: Gavin Mogan
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Upgrade to 1.66.0
+    - Upgrade to 1.68.0
+    - Redis is required for workers, so embed a redis server
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.66.0
+      image: matrixdotorg/synapse:v1.68.0

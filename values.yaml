@@ -124,6 +124,13 @@ database:
 postgresql:
   enabled: false
 
+redis:
+  ## redis.enabled -- Enable embedded redis serer. Used for replication/workers
+  enabled: true
+  auth:
+    ## redis.auth.password -- You should change this
+    password: 'riches-jarring-acts'
+
 ### Seperate claim if you want to store media seperately
 existingMediaClaim:
 
@@ -148,6 +155,13 @@ extra_python_modules:
   - https://github.com/t2bot/synapse-simple-antispam/archive/refs/heads/master.zip#egg=synapse-simple-antispam
 
 homeserver:
+  redis:
+    # homeserver.redis.enabled -- If you want workers/distributed processing, you want redis as of 1.67
+    # https://matrix-org.github.io/synapse/v1.67/upgrade.html#direct-tcp-replication-is-no-longer-supported-migrate-to-redis
+    enabled: true
+    host:  synapse-redis-master.matrix.svc.cluster.local
+    ## homeserver.redis.password -- Password to connect to redis
+    password: 'riches-jarring-acts'
   # Don't send federation from main proc
   send_federation: false
 
@@ -369,12 +383,6 @@ homeserver:
         - "0.0.0.0"
       type: replication
     # The HTTP replication port
-    - port: 9093
-      bind_addresses:
-        - "0.0.0.0"
-      type: http
-      resources:
-        - names: [replication]
     - type: metrics
       port: 9000
       bind_addresses:
@@ -1956,7 +1964,6 @@ federation_reader:
   # The replication listener on the synapse to talk to.
   worker_replication_host: '{{ include "synapse.fullname" . }}'
   worker_replication_port: 9092
-  worker_replication_http_port: 9093
   worker_listeners:
     - type: http
       port: 8083
@@ -1969,7 +1976,6 @@ federation_sender:
   # The replication listener on the synapse to talk to.
   worker_replication_host: '{{ include "synapse.fullname" . }}'
   worker_replication_port: 9092
-  worker_replication_http_port: 9093
   worker_listeners:
     - type: http
       port: 8083
