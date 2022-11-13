@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
-appVersion: v1.68.0
+appVersion: v1.71.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.8.22
+version: 0.8.23
 keywords:
   - synapse
   - chat
@@ -28,10 +28,8 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |
-    - Upgrade to 1.68.0
-    - Redis is required for workers, so embed a redis server
-    - Previous release broke workers by listening on the wrong port
+    - Upgrade to 1.71.0
   artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.68.0
+      image: matrixdotorg/synapse:v1.71.0
