@@ -1,9 +1,9 @@
 apiVersion: v2
-type: application
 appVersion: v1.78.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
 version: 0.8.26
+type: application
 keywords:
   - synapse
   - chat
@@ -29,7 +29,6 @@ maintainers:
 annotations:
   artifacthub.io/changes: |
     - Upgrade to 1.78.0
-  artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/images: |
     - name: synapse
-      image: matrixdotorg/synapse:v1.78.0
+      image: "matrixdotorg/synapse:v1.78.0"
