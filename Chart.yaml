@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: "v1.79.0"
+appVersion: "v1.80.0"
 description: The reference implementation for a Matrix.org chat server
 name: synapse
 version: 0.8.27
@@ -31,4 +31,4 @@ annotations:
      - "force release ([0bb806d](https://github.com/halkeye-helm-charts/synapse/commit/0bb806d5121e9ceae35d065c15f74733cd898acf))"
   artifacthub.io/images: |
     - name: synapse
-      image: "matrixdotorg/synapse:v1.79.0"
+      image: "matrixdotorg/synapse:v1.80.0"
