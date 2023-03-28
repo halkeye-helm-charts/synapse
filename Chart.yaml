@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: "v1.79.0"
+appVersion: v1.79.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.8.26
+version: 0.8.27
 type: application
 keywords:
   - synapse
@@ -27,8 +27,8 @@ maintainers:
   - name: Gavin Mogan
     email: helm@gavinmogan.com
 annotations:
-  artifacthub.io/changes: |
-    - Upgrade to 1.78.0
+  artifacthub.io/changes: |2
+     - "force release ([0bb806d](https://github.com/halkeye-helm-charts/synapse/commit/0bb806d5121e9ceae35d065c15f74733cd898acf))"
   artifacthub.io/images: |
     - name: synapse
       image: "matrixdotorg/synapse:v1.79.0"
