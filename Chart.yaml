@@ -31,4 +31,4 @@ annotations:
      - "**deps:** update helm release redis to ~17.9.0 ([e9e141c](https://github.com/halkeye-helm-charts/synapse/commit/e9e141c1aa88a74b62e9425fe24ecf9b3f66e22b))"
   artifacthub.io/images: |
     - name: synapse
-      image: "matrixdotorg/synapse:v1.80.0"
+      image: "matrixdotorg/synapse:v1.81.0"
