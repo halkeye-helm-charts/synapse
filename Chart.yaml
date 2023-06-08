@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: v1.80.0
 description: The reference implementation for a Matrix.org chat server
 name: synapse
-version: 0.17.0
+version: 0.18.0
 type: application
 keywords:
   - synapse
@@ -28,7 +28,7 @@ maintainers:
     email: helm@gavinmogan.com
 annotations:
   artifacthub.io/changes: |2
-     - "**deps:** update matrixdotorg/synapse docker tag to v1.85.1 ([e7c12c0](https://github.com/halkeye-helm-charts/synapse/commit/e7c12c0f7e8f58a342fbe0441c5b39ebfa51b61d))"
+     - "**deps:** update matrixdotorg/synapse docker tag to v1.85.2 ([3651808](https://github.com/halkeye-helm-charts/synapse/commit/365180866267054e312a5f16626149b016f8e5e1))"
   artifacthub.io/images: |
     - name: synapse
       image: "matrixdotorg/synapse:v1.85.2"
