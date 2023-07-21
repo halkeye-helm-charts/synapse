@@ -107,7 +107,12 @@ spec:
     {{- end }}
       volumes:
         - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "synapse.fullname" .) }}
+          {{- else }}
           emptyDir: {}
+          {{- end }}
         - name: config
           secret:
             secretName: {{ include "synapse.fullname" . }}
