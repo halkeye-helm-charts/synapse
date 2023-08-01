@@ -31,4 +31,4 @@ annotations:
      - "**deps:** update matrixdotorg/synapse docker tag to v1.88.0 ([8057ac0](https://github.com/halkeye-helm-charts/synapse/commit/8057ac0c72fc27dcb9905f3e1445743146b58e07))"
   artifacthub.io/images: |
     - name: synapse
-      image: "matrixdotorg/synapse:v1.88.0"
+      image: "matrixdotorg/synapse:v1.89.0"
